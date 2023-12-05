@@ -9,6 +9,7 @@
   <meta content="" name="description">
   <meta content="" name="keywords">
 
+ 
   <!-- Favicons -->
   <link href="assets/img/favicon.png" rel="icon">
   <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
@@ -31,6 +32,9 @@
   * Author: BootstrapMade.com
   * License: https://bootstrapmade.com/license/
   ======================================================== -->
+
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
 </head>
 
 <body>
@@ -82,7 +86,7 @@
           </li>
           <li class="nav-item">
             <a class="nav-link active" href="openweather.html">Clima</a>
-          </li>          
+          </li>
           <li class="nav-item">
             <a class="nav-link active" href="contact.html">Contact</a>
           </li>
@@ -132,62 +136,85 @@
 
           <!-- ======= Datos de Propiedades ======= -->
 
-          <div class="col-md-4">
-            <div class="card-box-a card-shadow">
-              <div class="img-box-a">
-                <img src="assets/img/property-7.jpg" alt="" class="img-a img-fluid">
-              </div>
-              <div class="card-overlay">
-                <div class="card-overlay-a-content">
-                  <div class="card-header-a">
-                    <h2 class="card-title-a">
-                      <a href="#">Apartment</a>
-                    </h2>
-                    <p class="link-a">Totalmente equipado con todo lo que usted necesita para vivir</p>
-                  </div>
-                  <div class="card-body-a">
-                    <div class="price-box d-flex">
-                      <span class="price-a">Rent | $ 575.25</span>
-                    </div>
-                  </div>
-                  <div class="card-footer-a">
-                    <ul class="card-info d-flex justify-content-around">
-                      <li>
-                        <h4 class="card-info-title">Area</h4>
-                        <span>120m
-                          <sup>2</sup>
-                        </span>
-                      </li>
-                      <li>
-                        <h4 class="card-info-title">Rooms</h4>
-                        <span>2</span>
-                      </li>
-                      <li>
-                        <h4 class="card-info-title">Floors</h4>
-                        <span>1</span>
-                      </li>
-                      <li>
-                        <h4 class="card-info-title">Garages</h4>
-                        <span>1</span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
 
           <!-- ======= Fin de Datos de Propiedades ======= -->
 
         </div>
 
-        
+
 
       </div>
     </section><!-- End Property Grid Single-->
 
   </main><!-- End #main -->
+
+  <script>
+    const xhr =  new XMLHttpRequest();
+
+    xhr.addEventListener('load',e => {
+      const respuesta = JSON.parse(xhr.response);
+      
+      
+      console.log('LOAD', respuesta)
+      var doc= document.getElementById("datosPropiedades");
+
+      for(let i = 0 ; i <respuesta.propiedades.length;i++){
+        let obj = respuesta.propiedades[i];
+        //console.log("Tipo" + obj.tipo)
+        doc.innerHTML +=
+              `<div class="col-md-4">
+                  <div class="card-box-a card-shadow">
+                    <div class="img-box-a">
+                      <img src= ${obj.imagen} alt="" class="img-a img-fluid">
+                    </div>
+                    <div class="card-overlay">
+                      <div class="card-overlay-a-content">
+                        <div class="card-header-a">
+                          <h2 class="card-title-a">
+                            <a href="#">${obj.clasificacion}</a>
+                          </h2>
+                          <p class="link-a">${obj.descripcion}</p>
+                        </div>
+                        <div class="card-body-a">
+                          <div class="price-box d-flex">
+                            <span class="price-a">${obj.tipo} | $ ${obj.precio}</span>
+                          </div>
+                        </div>
+                        <div class="card-footer-a">
+                          <ul class="card-info d-flex justify-content-around">
+                            <li>
+                              <h4 class="card-info-title">Area</h4>
+                              <span>${obj.detalle.area}m
+                                <sup>2</sup>
+                              </span>
+                            </li>
+                            <li>
+                              <h4 class="card-info-title">Rooms</h4>
+                              <span>${obj.detalle.rooms}</span>
+                            </li>
+                            <li>
+                              <h4 class="card-info-title">Floors</h4>
+                              <span>${obj.detalle.floors}</span>
+                            </li>
+                            <li>
+                              <h4 class="card-info-title">Garages</h4>
+                              <span>${obj.detalle.garages}</span>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>`
+      }
+    });
+
+    xhr.open('get', 'https://si0sgs.github.io/EstateAgency/datos/propiedades.json');
+    xhr.send();
+  </script>
+
+
+
 
   <!-- ======= Footer ======= -->
   <section class="section-footer">
